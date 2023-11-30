@@ -1,5 +1,6 @@
 #include <iomanip>
 #include <iostream>
+#include <string>
 
 #ifdef BC_LOG
 #define LOG(x) std::cout << x << "\n"
