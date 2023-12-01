@@ -2,7 +2,7 @@
 
 struct Point
 {
-    // x: position
+    // x: position [m]
     double x;
     // v: velocity [m/s]
     double v;
