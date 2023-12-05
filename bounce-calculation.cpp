@@ -9,14 +9,12 @@
 
 struct Point
 {
-    // x: position
-    double x;
     // v: velocity [m/s]
     double v;
     // m: mass [kg]
     long double m;
 
-    constexpr Point(double x, double v, long double m) : x(x), v(v), m(m) {}
+    constexpr Point(double v, long double m) : v(v), m(m) {}
 };
 
 constexpr double pow(double x, int n)
@@ -29,30 +27,21 @@ constexpr double pow(double x, int n)
 
 int main(int argc, char **argv)
 {
-    Point left(1, 0, 1);
-    Point right(left.x, -1, argc > 1 ? pow(100, std::stold(argv[1])) : 1);
+    Point left(0, 1);
+    Point right(-1, argc > 1 ? pow(100, std::stold(argv[1])) : 1);
+    double m = left.m + right.m;
     // b: bounces
     int b = 0;
     while (left.v < 0 || left.v > right.v)
     {
         LOG("... " << b);
-        double r = (left.x - right.x) / (left.v - right.v);
-        left.x += left.v * r;
-        right.x += right.v * r;
-        double m = left.m + right.m;
         double vl = (2 * right.m * right.v + (left.m - right.m) * left.v) / m;
         double vr = (2 * left.m * left.v + (right.m - left.m) * right.v) / m;
-        left.v = vl;
+        if (vl < 0)
+            b++;
+        left.v = vl < 0 ? -vl : vl;
         right.v = vr;
         b++;
-        if (left.v < 0)
-        {
-            double r = left.x / left.v;
-            left.x += left.v * r;
-            right.x += right.v * r;
-            left.v = -left.v;
-            b++;
-        }
     }
-    std::cout << "PI: " << b << "\n";
+    std::cout << "PI: " << (b % 2 == 0 ? b - 1 : b) << "\n";
 }
