@@ -10,6 +10,11 @@ struct Point
     long double m;
 
     constexpr Point(double x, double v, long double m) : x(x), v(v), m(m) {}
+
+    inline const double p()
+    {
+        return m * v;
+    }
 };
 
 inline void print(long long t, int b, const Point &left, const Point &right)
@@ -24,7 +29,7 @@ inline void print(long long t, int b, const Point &left, const Point &right)
 int main()
 {
     Point left(1, 0, 1);
-    Point right(2, -1, 1000000);
+    Point right(2, -1, 100000000);
 
     // t: time [s]
     long long t = 0;
@@ -48,8 +53,8 @@ int main()
             right.x = left.x;
 
             double m = left.m + right.m;
-            double vl = (2 * right.m * right.v + (left.m - right.m) * left.v) / m;
-            double vr = (2 * left.m * left.v + (right.m - left.m) * right.v) / m;
+            double vl = (2 * right.p() + (left.m - right.m) * left.v) / m;
+            double vr = (2 * left.p() + (right.m - left.m) * right.v) / m;
 
             left.v = vl;
             right.v = vr;
