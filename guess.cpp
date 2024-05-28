@@ -23,10 +23,11 @@ int main()
         if (input == answer)
         {
             std::cout << "Victory!" << std::endl;
-            return 1;
+            return 0;
         }
         std::cout << (input < answer ? "The number is higher!" : "The number is lower!") << std::endl;
         turn++;
     } while (turn < turnLim);
     std::cout << "You lost! The correct number was " << answer << "..." << std::endl;
+    return 0;
 }
