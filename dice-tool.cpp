@@ -7,8 +7,6 @@
 // my knowledge of C++ and algorithms.
 // May be faulty - edge cases not tested yet!
 
-using uint = unsigned int;
-
 struct dice {
     uint sides = 6;
 };
@@ -67,14 +65,13 @@ int main() {
         dice_set.push_back(dice { sides });
     }
 
-    // use for loop for scope safety istead of while
-    for (bool is_running = true; is_running;) {
+    while (true) {
         std::cout << "Enter desired amount ('-1' to quit): ";
         int aim;
         std::cin >> aim;
 
         if (aim < 0) {
-            is_running = false;
+            break;
         }
 
         float chance = chance_of(dice_set, aim);
