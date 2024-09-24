@@ -24,8 +24,10 @@ uint good_outcome_count(
     uint value_until_now = 0, uint index = 0
 ) {
     dice d1 = dice_set[index];
-    if (index + 1 > dice_set.size()) {
-        return d1.sides <= aim ? 1 : 0;
+    if (index + 1 >= dice_set.size()) {
+        bool low_limit = aim - value_until_now > 0;
+        bool high_limit = aim - value_until_now <= d1.sides;
+        return low_limit && high_limit ? 1 : 0;
     }
     dice d2 = dice_set[index + 1];
     uint count = 0;
