@@ -20,9 +20,9 @@ uint total_outcome_count(std::vector<dice> dice_set) {
 }
 
 uint good_outcome_count(
-    const std::vector<dice>& dice_set, uint aim,
-    uint value_until_now = 0, uint index = 0
-) {
+        const std::vector<dice>& dice_set, uint aim,
+        uint value_until_now = 0, uint index = 0
+        ) {
     dice d1 = dice_set[index];
     if (index + 1 >= dice_set.size()) {
         bool low_limit = aim - value_until_now > 0;
@@ -34,18 +34,27 @@ uint good_outcome_count(
     for (uint i = 1; i <= d1.sides; i++) {
         if (aim - (value_until_now + i) <= d2.sides) {
             count += good_outcome_count(
-                dice_set, aim, value_until_now + i, index + 1
-            );
+                    dice_set, aim, value_until_now + i, index + 1
+                    );
         }
     }
     return count;
 }
 
-inline float chance_of(std::vector<dice> dice_set, uint number) {
-    uint total_outcomes = total_outcome_count(dice_set);
-    uint good_outcomes = good_outcome_count(dice_set, number);
-    return (float)good_outcomes / (float)total_outcomes;
-}
+// a session keeps information about previous runs to achieve higher
+// efficiency
+class session {
+public:
+    session(std::vector<dice> dice_set) : dice_set(dice_set) {}
+
+    inline float chance_of(uint number) {
+        static uint total_outcomes = total_outcome_count(dice_set);
+        uint good_outcomes = good_outcome_count(dice_set, number);
+        return (float)good_outcomes / (float)total_outcomes;
+    }
+private:
+    std::vector<dice> dice_set;
+};
 
 inline float to_percent(float number) {
     return number * 100;
@@ -67,6 +76,8 @@ int main() {
         dice_set.push_back(dice { sides });
     }
 
+    session dice_session = { dice_set };
+
     while (true) {
         std::cout << "Enter desired amount ('-1' to quit): ";
         int aim;
@@ -76,7 +87,7 @@ int main() {
             break;
         }
 
-        float chance = chance_of(dice_set, aim);
+        float chance = dice_session.chance_of(aim);
         std::cout << "Chance: " << to_percent(chance) << "%" << std::endl;
     }
 
