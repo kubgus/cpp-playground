@@ -1,3 +1,4 @@
+#include <iomanip>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -33,11 +34,7 @@ uint good_outcome_count(
     dice d2 = dice_set[index + 1];
     uint count = 0;
     for (uint i = 1; i <= d1.sides; i++) {
-        if (aim - (value_until_now + i) <= d2.sides) {
-            count += good_outcome_count(
-                    dice_set, aim, value_until_now + i, index + 1
-                    );
-        }
+        count += good_outcome_count(dice_set, aim, value_until_now + i, index + 1);
     }
     return count;
 }
@@ -79,7 +76,7 @@ inline float to_percent(float number) {
 void print_chart(const session& dice_session) {
     for (uint i = dice_session.lowest_possible_value(); i <= dice_session.highest_possible_value(); i++) {
         float chance = dice_session.chance_of(i);
-        std::cout << i << ": " << to_percent(chance) << "%" << std::endl;
+        std::cout << std::setw(4) << i << ": " << to_percent(chance) << "%" << std::endl;
     }
 }
 
