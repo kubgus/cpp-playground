@@ -224,7 +224,6 @@ struct Player : public Agent {
     }
 
     int get_input() const {
-        std::cout << "Pick a spot to place " << tile_to_string(team) << ": ";
         std::string prompt = "Pick a spot to place " + tile_to_string(team) + ": ";
         int choice = take_validated_input<int>(
             prompt,
